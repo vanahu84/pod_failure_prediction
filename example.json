@@ -1,0 +1,15 @@
+{
+    "pod_id": "pod-test-1",
+    "cpu_usage_pct": 88.5,
+    "memory_usage_pct": 95.2,
+    "memory_leak_rate": 0.22,
+    "restart_count_24h": 3,
+    "error_log_rate": 10,
+    "request_latency_ms": 180,
+    "replica_count": 4,
+    "node_pressure_score": 0.74,
+    "autoscaler_action": "scale_up",
+    "prometheus_anomaly_score": 0.82,
+    "previous_failures": 2,
+    "deployment_uptime_hrs": 48
+}
