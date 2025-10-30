@@ -19,9 +19,17 @@ st.markdown("Predict if a pod is at risk of failure based on its metrics")
 
 # Sidebar for API configuration
 st.sidebar.header("API Configuration")
+
+# Import configuration
+try:
+    from config import API_URL
+    default_api_url = API_URL
+except ImportError:
+    default_api_url = "http://127.0.0.1:8000/predict"
+
 api_url = st.sidebar.text_input(
     "API Endpoint", 
-    value="http://127.0.0.1:8000/predict",
+    value=default_api_url,
     help="URL of the FastAPI prediction endpoint"
 )
 
