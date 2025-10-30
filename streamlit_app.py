@@ -41,6 +41,9 @@ with col1:
     
     # Create input form
     with st.form("prediction_form"):
+        # Get query parameters for example scenarios
+        query_params = st.query_params
+        
         # Pod identification
         pod_id = st.text_input("Pod ID", value="pod-test-1", help="Unique identifier for the pod")
         
@@ -49,13 +52,17 @@ with col1:
         col_a, col_b = st.columns(2)
         
         with col_a:
-            cpu_usage = st.slider("CPU Usage (%)", 0.0, 100.0, 88.5, 0.1)
-            memory_usage = st.slider("Memory Usage (%)", 0.0, 100.0, 95.2, 0.1)
+            cpu_default = float(query_params.get("cpu", 88.5))
+            memory_default = float(query_params.get("memory", 95.2))
+            cpu_usage = st.slider("CPU Usage (%)", 0.0, 100.0, cpu_default, 0.1)
+            memory_usage = st.slider("Memory Usage (%)", 0.0, 100.0, memory_default, 0.1)
             memory_leak_rate = st.slider("Memory Leak Rate", 0.0, 1.0, 0.22, 0.01)
             
         with col_b:
-            restart_count = st.number_input("Restart Count (24h)", 0, 50, 3)
-            error_log_rate = st.number_input("Error Log Rate", 0, 100, 10)
+            restart_default = int(query_params.get("restarts", 3))
+            error_default = int(query_params.get("errors", 10))
+            restart_count = st.number_input("Restart Count (24h)", 0, 50, restart_default)
+            error_log_rate = st.number_input("Error Log Rate", 0, 100, error_default)
             request_latency = st.slider("Request Latency (ms)", 0.0, 1000.0, 180.0, 1.0)
         
         # Scaling and deployment metrics
@@ -180,21 +187,33 @@ col_ex1, col_ex2, col_ex3 = st.columns(3)
 
 with col_ex1:
     if st.button("🟢 Healthy Pod Example"):
-        st.experimental_set_query_params(
-            cpu=45.0, memory=60.0, restarts=0, errors=2
-        )
+        st.query_params.update({
+            "cpu": "45.0", 
+            "memory": "60.0", 
+            "restarts": "0", 
+            "errors": "2"
+        })
+        st.rerun()
 
 with col_ex2:
     if st.button("🟡 Warning Pod Example"):
-        st.experimental_set_query_params(
-            cpu=75.0, memory=85.0, restarts=2, errors=8
-        )
+        st.query_params.update({
+            "cpu": "75.0", 
+            "memory": "85.0", 
+            "restarts": "2", 
+            "errors": "8"
+        })
+        st.rerun()
 
 with col_ex3:
     if st.button("🔴 Critical Pod Example"):
-        st.experimental_set_query_params(
-            cpu=95.0, memory=98.0, restarts=5, errors=25
-        )
+        st.query_params.update({
+            "cpu": "95.0", 
+            "memory": "98.0", 
+            "restarts": "5", 
+            "errors": "25"
+        })
+        st.rerun()
 
 # Instructions
 with st.expander("ℹ️ How to Use"):
